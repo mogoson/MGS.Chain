@@ -29,7 +29,7 @@ namespace Mogoson.Machinery
 
         protected static Chain targetChain;
         protected static Material material;
-        protected const string MaterialPath = "Assets/MGS-MechanicalDrive/Materials/Anchor.mat";
+        protected const string MaterialPath = "Assets/MGS-Chain/Materials/Anchor.mat";
 
         protected static string prefix = "Anchor";
         protected const string RendererName = "AnchorRenderer";
@@ -41,18 +41,18 @@ namespace Mogoson.Machinery
         public static float Radius { protected set; get; }
         public static float From { protected set; get; }
         public static float To { protected set; get; }
-        public static int CountC { protected set; get; }
-        public static bool IsCircularSettingsReasonable
+        public static int CircularCount { protected set; get; }
+        public static bool IsCircularSettingsValid
         {
-            get { return Center && Radius > 0 && From < To && CountC > 0; }
+            get { return Center && Radius > 0 && From < To && CircularCount > 0; }
         }
 
         public static Transform Start { protected set; get; }
         public static Transform End { protected set; get; }
-        public static int CountL { protected set; get; }
-        public static bool IsLinearSettingsReasonable
+        public static int LinearCount { protected set; get; }
+        public static bool IsLinearSettingsValid
         {
-            get { return Start && End && CountL > 0; }
+            get { return Start && End && LinearCount > 0; }
         }
         #endregion
 
@@ -104,7 +104,7 @@ namespace Mogoson.Machinery
                     Radius = EditorGUILayout.FloatField("Radius", Radius);
                     From = EditorGUILayout.FloatField("From", From);
                     To = EditorGUILayout.FloatField("To", To);
-                    CountC = EditorGUILayout.IntField("Count", CountC);
+                    CircularCount = EditorGUILayout.IntField("Count", CircularCount);
                     if (EditorGUI.EndChangeCheck())
                         SceneView.RepaintAll();
 
@@ -112,10 +112,10 @@ namespace Mogoson.Machinery
                     GUILayout.Space(LeftAlign);
                     if (GUILayout.Button("Create"))
                     {
-                        if (IsCircularSettingsReasonable)
+                        if (IsCircularSettingsValid)
                             CreateCircularAnchors();
                         else
-                            ShowNotification(new GUIContent("The parameter settings of circular anchor creater is not reasonable."));
+                            ShowNotification(new GUIContent("The parameter settings of circular anchor creater is invalid."));
                     }
                     if (GUILayout.Button("Reset"))
                         ResetCircularAnchorCreater();
@@ -130,7 +130,7 @@ namespace Mogoson.Machinery
                     EditorGUI.BeginChangeCheck();
                     Start = (Transform)EditorGUILayout.ObjectField("Start", Start, typeof(Transform), true);
                     End = (Transform)EditorGUILayout.ObjectField("End", End, typeof(Transform), true);
-                    CountL = EditorGUILayout.IntField("Count", CountL);
+                    LinearCount = EditorGUILayout.IntField("Count", LinearCount);
                     if (EditorGUI.EndChangeCheck())
                         SceneView.RepaintAll();
 
@@ -138,10 +138,10 @@ namespace Mogoson.Machinery
                     GUILayout.Space(LeftAlign);
                     if (GUILayout.Button("Create"))
                     {
-                        if (IsLinearSettingsReasonable)
+                        if (IsLinearSettingsValid)
                             CreateLinearAnchors();
                         else
-                            ShowNotification(new GUIContent("The parameter settings of linear anchor creater is not reasonable."));
+                            ShowNotification(new GUIContent("The parameter settings of linear anchor creater is invalid."));
                     }
                     if (GUILayout.Button("Reset"))
                         ResetLinearAnchorCreater();
@@ -158,7 +158,7 @@ namespace Mogoson.Machinery
                     GUILayout.Space(LeftAlign);
                     if (GUILayout.Button("Rename"))
                     {
-                        if (prefix.Trim() == string.Empty)
+                        if (prefix == string.Empty)
                             ShowNotification(new GUIContent("The value of prefix cannot be empty."));
                         else
                             RenameAnchors();
@@ -186,7 +186,8 @@ namespace Mogoson.Machinery
                     {
                         var delete = EditorUtility.DisplayDialog(
                          "Delete Anchors",
-                         "This operate will delete all of the chain anchors.\nAre you sure continue to do this?",
+                         "This operate will delete all of the chain anchors.\n" +
+                         "Are you sure continue to do this?",
                          "Yes",
                          "Cancel");
 
@@ -216,44 +217,44 @@ namespace Mogoson.Machinery
 
         protected void CreateCircularAnchors()
         {
-            var space = (To - From) / (CountC == 1 ? 1 : CountC - 1);
-            for (int i = 0; i < CountC; i++)
+            var space = (To - From) / (CircularCount == 1 ? 1 : CircularCount - 1);
+            for (int i = 0; i < CircularCount; i++)
             {
                 var direction = Quaternion.AngleAxis(From + space * i, targetChain.anchorRoot.forward) * Vector3.up;
                 var tangent = -Vector3.Cross(direction, targetChain.anchorRoot.forward);
                 var position = Center.position + direction * Radius;
-                CreateAnchor("CircularAnchor" + " (" + i + ")", position, position + tangent, direction, Center.GetSiblingIndex());
+                CreateAnchor("CircularAnchor " + i, position, position + tangent, direction, Center.GetSiblingIndex());
             }
             ResetCircularAnchorCreater();
-            RefreshChainCurve();
+            RebuildChainCurve();
             MarkSceneDirty();
         }
 
         protected void ResetCircularAnchorCreater()
         {
             Center = null;
-            Radius = From = To = CountC = 0;
+            Radius = From = To = CircularCount = 0;
             SceneView.RepaintAll();
         }
 
         protected void CreateLinearAnchors()
         {
             var direction = (End.position - Start.position).normalized;
-            var space = Vector3.Distance(Start.position, End.position) / (CountL + 1);
-            for (int i = 0; i < CountL; i++)
+            var space = Vector3.Distance(Start.position, End.position) / (LinearCount + 1);
+            for (int i = 0; i < LinearCount; i++)
             {
-                CreateAnchor("LinearAnchor" + " (" + i + ")", Start.position + direction * space * (i + 1),
+                CreateAnchor("LinearAnchor " + i, Start.position + direction * space * (i + 1),
                     End.position, Vector3.Cross(direction, targetChain.anchorRoot.forward), End.GetSiblingIndex());
             }
             ResetLinearAnchorCreater();
-            RefreshChainCurve();
+            RebuildChainCurve();
             MarkSceneDirty();
         }
 
         protected void ResetLinearAnchorCreater()
         {
             Start = End = null;
-            CountL = 0;
+            LinearCount = 0;
             SceneView.RepaintAll();
         }
 
@@ -267,7 +268,7 @@ namespace Mogoson.Machinery
             AttachRenderer(newAnchor);
         }
 
-        protected void RefreshChainCurve()
+        protected void RebuildChainCurve()
         {
             if (targetChain.anchorRoot.childCount >= 2)
                 targetChain.CreateCurve();
@@ -277,7 +278,7 @@ namespace Mogoson.Machinery
         {
             for (int i = 0; i < targetChain.anchorRoot.childCount; i++)
             {
-                targetChain.anchorRoot.GetChild(i).name = prefix.Trim() + " (" + i + ")";
+                targetChain.anchorRoot.GetChild(i).name = prefix + i;
             }
             MarkSceneDirty();
         }

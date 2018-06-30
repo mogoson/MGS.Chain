@@ -10,6 +10,7 @@
  *  Description  :  Initial development version.
  *************************************************************************/
 
+using Mogoson.Machinery;
 using UnityEngine;
 
 namespace Mogoson.Machinery

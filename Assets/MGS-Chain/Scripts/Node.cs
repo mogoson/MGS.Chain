@@ -21,7 +21,7 @@ namespace Mogoson.Machinery
         /// <summary>
         /// ID of node in the chain.
         /// </summary>
-        public int ID;
+        public int ID = 0;
         #endregion
     }
 }

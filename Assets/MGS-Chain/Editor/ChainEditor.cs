@@ -10,6 +10,7 @@
  *  Description  :  Initial development version.
  *************************************************************************/
 
+using Mogoson.UEditor;
 using System;
 using UnityEditor;
 using UnityEngine;
@@ -18,7 +19,7 @@ namespace Mogoson.Machinery
 {
     [CustomEditor(typeof(Chain), true)]
     [CanEditMultipleObjects]
-    public class ChainEditor : BaseMEditor
+    public class ChainEditor : GenericEditor
     {
         #region Field and Property
         protected Chain Target { get { return target as Chain; } }
@@ -45,13 +46,13 @@ namespace Mogoson.Machinery
         protected virtual void OnSceneGUI()
         {
             #region Coordinate System
-            Handles.color = Blue;
             var horizontal = Target.transform.right * LineLength;
             var vertical = Target.transform.up * LineLength;
-            DrawSphereCap(Target.transform.position, Quaternion.identity, NodeSize);
 
+            Handles.color = Blue;
             Handles.DrawLine(Target.transform.position - horizontal, Target.transform.position + horizontal);
             Handles.DrawLine(Target.transform.position - vertical, Target.transform.position + vertical);
+            DrawAdaptiveSphereCap(Target.transform.position, Quaternion.identity, NodeSize);
             #endregion
 
             #region Anchors And Curve
@@ -59,7 +60,7 @@ namespace Mogoson.Machinery
             {
                 foreach (Transform anchor in Target.anchorRoot)
                 {
-                    DrawSphereCap(anchor.position, Quaternion.identity, NodeSize);
+                    DrawAdaptiveSphereCap(anchor.position, Quaternion.identity, NodeSize);
                 }
 
                 if (Target.anchorRoot.childCount >= 2)
@@ -67,8 +68,8 @@ namespace Mogoson.Machinery
                     var maxTime = Target.Curve[Target.Curve.Length - 1].time;
                     for (float timer = 0; timer < maxTime; timer += Delta)
                     {
-                        var timerPoint = Target.anchorRoot.TransformPoint(Target.Curve.Evaluate(timer));
-                        var deltaPoint = Target.anchorRoot.TransformPoint(Target.Curve.Evaluate(Mathf.Clamp(timer + Delta, 0, maxTime)));
+                        var timerPoint = Target.anchorRoot.TransformPoint(Target.Curve.GetPointAt(timer));
+                        var deltaPoint = Target.anchorRoot.TransformPoint(Target.Curve.GetPointAt(Mathf.Min(timer + Delta, maxTime)));
                         Handles.DrawLine(timerPoint, deltaPoint);
                     }
                 }
@@ -78,41 +79,41 @@ namespace Mogoson.Machinery
             if (AnchorEditor.IsOpen)
             {
                 #region Circular Settings
-                if (AnchorEditor.IsCircularSettingsReasonable)
+                if (AnchorEditor.IsCircularSettingsValid)
                 {
                     var from = Quaternion.AngleAxis(AnchorEditor.From, Target.transform.forward) * Vector3.up;
                     var to = Quaternion.AngleAxis(AnchorEditor.To, Target.transform.forward) * Vector3.up;
                     var angle = AnchorEditor.To - AnchorEditor.From;
 
-                    Handles.color = Green;
+                    Handles.color = Color.green;
                     Handles.DrawWireArc(AnchorEditor.Center.position, Target.transform.forward, from, angle, AnchorEditor.Radius);
 
-                    DrawSphereArrow(AnchorEditor.Center.position, from, AnchorEditor.Radius, NodeSize, Green, string.Empty);
-                    DrawSphereArrow(AnchorEditor.Center.position, to, AnchorEditor.Radius, NodeSize, Green, string.Empty);
+                    DrawSphereArrow(AnchorEditor.Center.position, from, AnchorEditor.Radius, NodeSize);
+                    DrawSphereArrow(AnchorEditor.Center.position, to, AnchorEditor.Radius, NodeSize);
 
-                    if (AnchorEditor.CountC > 2)
+                    if (AnchorEditor.CircularCount > 2)
                     {
-                        var space = angle / (AnchorEditor.CountC - 1);
-                        for (int i = 0; i < AnchorEditor.CountC - 2; i++)
+                        var space = angle / (AnchorEditor.CircularCount - 1);
+                        for (int i = 0; i < AnchorEditor.CircularCount - 2; i++)
                         {
                             var direction = Quaternion.AngleAxis(AnchorEditor.From + space * (i + 1), Target.transform.forward) * Vector3.up;
-                            DrawSphereArrow(AnchorEditor.Center.position, direction.normalized, AnchorEditor.Radius, NodeSize, Green, string.Empty);
+                            DrawSphereArrow(AnchorEditor.Center.position, direction.normalized, AnchorEditor.Radius, NodeSize);
                         }
                     }
                 }
                 #endregion
 
                 #region Linear Settings
-                if (AnchorEditor.IsLinearSettingsReasonable)
+                if (AnchorEditor.IsLinearSettingsValid)
                 {
                     var direction = (AnchorEditor.End.position - AnchorEditor.Start.position).normalized;
-                    var space = Vector3.Distance(AnchorEditor.Start.position, AnchorEditor.End.position) / (AnchorEditor.CountL + 1);
+                    var space = Vector3.Distance(AnchorEditor.Start.position, AnchorEditor.End.position) / (AnchorEditor.LinearCount + 1);
 
-                    Handles.color = Green;
+                    Handles.color = Color.green;
                     Handles.DrawLine(AnchorEditor.Start.position, AnchorEditor.End.position);
-                    for (int i = 0; i < AnchorEditor.CountL; i++)
+                    for (int i = 0; i < AnchorEditor.LinearCount; i++)
                     {
-                        DrawSphereCap(AnchorEditor.Start.position + direction * space * (i + 1), Quaternion.identity, NodeSize);
+                        DrawAdaptiveSphereCap(AnchorEditor.Start.position + direction * space * (i + 1), Quaternion.identity, NodeSize);
                     }
                 }
                 #endregion

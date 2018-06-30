@@ -75,8 +75,8 @@ namespace Mogoson.Machinery
         protected void TowNodeBaseOnCurve(Transform node, float time)
         {
             //Calculate position and direction.
-            var nodePos = anchorRoot.TransformPoint(Curve.Evaluate(time));
-            var deltaPos = anchorRoot.TransformPoint(Curve.Evaluate(time + delta));
+            var nodePos = anchorRoot.TransformPoint(Curve.GetPointAt(time));
+            var deltaPos = anchorRoot.TransformPoint(Curve.GetPointAt(time + delta));
             var secant = (deltaPos - nodePos).normalized;
             var worldUp = Vector3.Cross(secant, transform.forward);
 
