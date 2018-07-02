@@ -15,13 +15,23 @@ using UnityEngine;
 namespace Mogoson.Machinery
 {
     [AddComponentMenu("Mogoson/Machinery/Node")]
-    public class Node : MonoBehaviour
+    public class Node : MonoBehaviour, INode
     {
         #region Field and Property
         /// <summary>
         /// ID of node in the chain.
         /// </summary>
-        public int ID = 0;
+        [SerializeField]
+        protected int id = 0;
+
+        /// <summary>
+        /// ID of node in the chain.
+        /// </summary>
+        public int ID
+        {
+            set { id = value; }
+            get { return id; }
+        }
         #endregion
     }
 }

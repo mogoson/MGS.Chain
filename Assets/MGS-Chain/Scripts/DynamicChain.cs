@@ -25,7 +25,7 @@ namespace Mogoson.Machinery
         /// <param name="velocity">Linear velocity.</param>
         public override void Drive(float velocity, DriveType type)
         {
-            CreateCurve();
+            RebuildCurve(true);
 
             var maxTime = Curve[Curve.Length - 1].time;
             if (Mathf.Abs(timer) >= maxTime)

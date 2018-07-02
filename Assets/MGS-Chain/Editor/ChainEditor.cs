@@ -34,7 +34,7 @@ namespace Mogoson.Machinery
                 Target.anchorRoot.localPosition = Vector3.zero;
                 Target.anchorRoot.localRotation = Quaternion.identity;
                 if (Target.anchorRoot.childCount >= 2)
-                    Target.CreateCurve();
+                    Target.RebuildCurve(true);
             }
             if (Target.nodeRoot)
             {
@@ -152,7 +152,7 @@ namespace Mogoson.Machinery
                 return;
 
             if (Target.Curve == null)
-                Target.CreateCurve();
+                Target.RebuildCurve(true);
 
             if (Target.nodeRoot == null || Target.nodePrefab == null)
                 return;

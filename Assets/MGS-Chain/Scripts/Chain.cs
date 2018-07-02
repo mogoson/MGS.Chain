@@ -16,7 +16,7 @@ using UnityEngine;
 namespace Mogoson.Machinery
 {
     [AddComponentMenu("Mogoson/Machinery/Chain")]
-    public class Chain : Mechanism
+    public class Chain : Mechanism, IChain
     {
         #region Field and Property
         /// <summary>
@@ -92,7 +92,7 @@ namespace Mogoson.Machinery
         /// </summary>
         public override void Initialize()
         {
-            CreateCurve();
+            RebuildCurve(true);
         }
 
         /// <summary>
@@ -109,9 +109,10 @@ namespace Mogoson.Machinery
         }
 
         /// <summary>
-        /// Create the curve base on anchors.
+        /// Rebuild the curve of chain base on anchors.
         /// </summary>
-        public virtual void CreateCurve()
+        /// <param name="close">Curve is close?</param>
+        public virtual void RebuildCurve(bool close)
         {
             Curve = new VectorAnimationCurve();
             Curve.PreWrapMode = Curve.PostWrapMode = WrapMode.Loop;
@@ -124,10 +125,15 @@ namespace Mogoson.Machinery
                 time += Vector3.Distance(anchorRoot.GetChild(i).position, anchorRoot.GetChild(i + 1).position);
             }
 
-            //Add last key and loop key(the first key).
+            //Add last key.
             Curve.AddKey(time, anchorRoot.GetChild(anchorRoot.childCount - 1).localPosition);
-            time += Vector3.Distance(anchorRoot.GetChild(anchorRoot.childCount - 1).position, anchorRoot.GetChild(0).position);
-            Curve.AddKey(time, anchorRoot.GetChild(0).localPosition);
+
+            if (close)
+            {
+                //Add the loop key(the first key).
+                time += Vector3.Distance(anchorRoot.GetChild(anchorRoot.childCount - 1).position, anchorRoot.GetChild(0).position);
+                Curve.AddKey(time, anchorRoot.GetChild(0).localPosition);
+            }
 
             //Smooth the in and out tangents of curve keyframes.
             Curve.SmoothTangents(0);
@@ -151,6 +157,17 @@ namespace Mogoson.Machinery
                 //Set node ID.
                 nodes[i] = nodeClone.GetComponent<Node>();
                 nodes[i].ID = i;
+            }
+        }
+
+        /// <summary>
+        /// Delete chain nodes.
+        /// </summary>
+        public virtual void DeleteNodes()
+        {
+            while (nodeRoot.childCount > 0)
+            {
+                Destroy(nodeRoot.GetChild(0).gameObject);
             }
         }
         #endregion

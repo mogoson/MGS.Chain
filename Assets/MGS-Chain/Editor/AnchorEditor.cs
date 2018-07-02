@@ -271,7 +271,7 @@ namespace Mogoson.Machinery
         protected void RebuildChainCurve()
         {
             if (targetChain.anchorRoot.childCount >= 2)
-                targetChain.CreateCurve();
+                targetChain.RebuildCurve(true);
         }
 
         protected void RenameAnchors()
