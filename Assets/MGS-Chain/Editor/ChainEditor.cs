@@ -15,7 +15,7 @@ using System;
 using UnityEditor;
 using UnityEngine;
 
-namespace Mogoson.Machinery
+namespace Mogoson.CurveChain
 {
     [CustomEditor(typeof(Chain), true)]
     [CanEditMultipleObjects]

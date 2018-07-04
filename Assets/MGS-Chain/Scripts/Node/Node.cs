@@ -1,25 +1,37 @@
 ﻿/*************************************************************************
  *  Copyright © 2017-2018 Mogoson. All rights reserved.
  *------------------------------------------------------------------------
- *  File         :  INode.cs
- *  Description  :  Define interface of node.
+ *  File         :  Node.cs
+ *  Description  :  Define Node component.
  *------------------------------------------------------------------------
  *  Author       :  Mogoson
  *  Version      :  0.1.0
- *  Date         :  7/3/2017
+ *  Date         :  6/21/2017
  *  Description  :  Initial development version.
  *************************************************************************/
 
-namespace Mogoson.Machinery
+using UnityEngine;
+
+namespace Mogoson.CurveChain
 {
-    /// <summary>
-    /// Interface of node.
-    /// </summary>
-    public interface INode
+    [AddComponentMenu("Mogoson/CurveChain/Node")]
+    public class Node : MonoBehaviour, INode
     {
+        #region Field and Property
         /// <summary>
         /// ID of node in the chain.
         /// </summary>
-        int ID { set; get; }
+        [SerializeField]
+        protected int id = 0;
+
+        /// <summary>
+        /// ID of node in the chain.
+        /// </summary>
+        public int ID
+        {
+            set { id = value; }
+            get { return id; }
+        }
+        #endregion
     }
 }

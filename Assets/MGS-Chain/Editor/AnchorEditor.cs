@@ -17,7 +17,7 @@ using UnityEngine;
 using UnityEditor.SceneManagement;
 #endif
 
-namespace Mogoson.Machinery
+namespace Mogoson.CurveChain
 {
     public class AnchorEditor : EditorWindow
     {

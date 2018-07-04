@@ -1,7 +1,7 @@
 ﻿/*************************************************************************
  *  Copyright © 2017-2018 Mogoson. All rights reserved.
  *------------------------------------------------------------------------
- *  File         :  IChain.cs
+ *  File         :  ICurveChain.cs
  *  Description  :  Define interface of chain.
  *------------------------------------------------------------------------
  *  Author       :  Mogoson
@@ -10,19 +10,39 @@
  *  Description  :  Initial development version.
  *************************************************************************/
 
-namespace Mogoson.Machinery
+using Mogoson.Curve;
+using Mogoson.Machinery;
+
+namespace Mogoson.CurveChain
 {
     /// <summary>
     /// Interface of chain.
     /// </summary>
-    public interface IChain : IMechanism
+    public interface ICurveChain : IMechanism, ICurve
     {
+        #region Property
+        /// <summary>
+        /// Count of chain nodes.
+        /// </summary>
+        int Count { set; get; }
+
+        /// <summary>
+        /// Space of nodes.
+        /// </summary>
+        float Space { set; get; }
+        #endregion
+
         #region Method
         /// <summary>
-        /// Rebuild the curve of chain base on anchors.
+        /// Rebuild the curve of chain.
         /// </summary>
-        /// <param name="close">Curve is close?</param>
-        void RebuildCurve(bool close);
+        void RebuildCurve();
+
+        /// <summary>
+        /// Estimate count of chain nodes.
+        /// </summary>
+        /// <returns>Count of chain nodes.</returns>
+        int EstimateCount();
 
         /// <summary>
         /// Create chain nodes.
