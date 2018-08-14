@@ -54,7 +54,7 @@ namespace Mogoson.CurveChain
         /// <summary>
         /// VectorAnimationCurve of nodes.
         /// </summary>
-        public VectorAnimationCurve Curve { protected set; get; }
+        public HermiteCurve Curve { protected set; get; }
 
         /// <summary>
         /// Timer for VectorAnimationCurve.
@@ -115,25 +115,25 @@ namespace Mogoson.CurveChain
         /// <param name="close">Curve is close?</param>
         public virtual void RebuildCurve(bool close)
         {
-            Curve = new VectorAnimationCurve();
+            Curve = new HermiteCurve();
             Curve.PreWrapMode = Curve.PostWrapMode = WrapMode.Loop;
 
             //Add frame keys to curve.
             float time = 0;
             for (int i = 0; i < anchorRoot.childCount - 1; i++)
             {
-                Curve.AddKey(time, anchorRoot.GetChild(i).localPosition);
+                Curve.AddKeyframe(time, anchorRoot.GetChild(i).localPosition);
                 time += Vector3.Distance(anchorRoot.GetChild(i).position, anchorRoot.GetChild(i + 1).position);
             }
 
             //Add last key.
-            Curve.AddKey(time, anchorRoot.GetChild(anchorRoot.childCount - 1).localPosition);
+            Curve.AddKeyframe(time, anchorRoot.GetChild(anchorRoot.childCount - 1).localPosition);
 
             if (close)
             {
                 //Add the loop key(the first key).
                 time += Vector3.Distance(anchorRoot.GetChild(anchorRoot.childCount - 1).position, anchorRoot.GetChild(0).position);
-                Curve.AddKey(time, anchorRoot.GetChild(0).localPosition);
+                Curve.AddKeyframe(time, anchorRoot.GetChild(0).localPosition);
             }
 
             //Smooth the in and out tangents of curve keyframes.

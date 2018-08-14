@@ -65,7 +65,7 @@ namespace Mogoson.CurveChain
 
                 if (Target.anchorRoot.childCount >= 2)
                 {
-                    var maxTime = Target.Curve[Target.Curve.Length - 1].time;
+                    var maxTime = Target.Curve[Target.Curve.KeyframeCount - 1].key;
                     for (float timer = 0; timer < maxTime; timer += Delta)
                     {
                         var timerPoint = Target.anchorRoot.TransformPoint(Target.Curve.GetPointAt(timer));
@@ -122,7 +122,7 @@ namespace Mogoson.CurveChain
 
         protected void EstimateCount()
         {
-            var estimate = Target.Curve[Target.Curve.Length - 1].time / Target.space;
+            var estimate = Target.Curve[Target.Curve.KeyframeCount - 1].key / Target.space;
             Target.count = (int)Math.Round(estimate, MidpointRounding.AwayFromZero);
             MarkSceneDirty();
         }

@@ -27,7 +27,7 @@ namespace Mogoson.CurveChain
         {
             RebuildCurve(true);
 
-            var maxTime = Curve[Curve.Length - 1].time;
+            var maxTime = Curve[Curve.KeyframeCount - 1].key;
             if (Mathf.Abs(timer) >= maxTime)
                 timer -= maxTime;
 

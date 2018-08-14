@@ -80,6 +80,10 @@ namespace Mogoson.CurveChain
             get { return space; }
         }
 
+        public float Length { get { return 0; } }
+
+        public float MaxKey { get { return 0; } }
+
         /// <summary>
         /// Delta time for curve
         /// </summary>
