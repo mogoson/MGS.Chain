@@ -11,13 +11,12 @@
  *************************************************************************/
 
 using Mogoson.Curve;
-using Mogoson.Machinery;
 using UnityEngine;
 
 namespace Mogoson.CurveChain
 {
     [AddComponentMenu("Mogoson/CurveChain/Chain")]
-    public class Chain : Mechanism
+    public class Chain : MonoBehaviour
     {
         #region Field and Property
         /// <summary>
@@ -91,7 +90,7 @@ namespace Mogoson.CurveChain
         /// <summary>
         /// Initialize chain.
         /// </summary>
-        public override void Initialize()
+        public void Initialize()
         {
             RebuildCurve(true);
         }
@@ -100,7 +99,7 @@ namespace Mogoson.CurveChain
         /// Drive chain.
         /// </summary>
         /// <param name="velocity">Linear velocity.</param>
-        public override void Drive(float velocity, DriveType type)
+        public virtual void Drive(float velocity)
         {
             timer += velocity * Mathf.Deg2Rad * Time.deltaTime;
             foreach (var node in nodes)
