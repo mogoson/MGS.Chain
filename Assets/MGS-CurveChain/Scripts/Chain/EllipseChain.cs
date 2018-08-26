@@ -1,8 +1,8 @@
 /*************************************************************************
  *  Copyright © 2018 Mogoson. All rights reserved.
  *------------------------------------------------------------------------
- *  File         :  HelixChain.cs
- *  Description  :  Define chain base on helix curve.
+ *  File         :  EllipseChain.cs
+ *  Description  :  Define chain base on ellipse curve.
  *------------------------------------------------------------------------
  *  Author       :  Mogoson
  *  Version      :  0.1.0
@@ -16,26 +16,21 @@ using UnityEngine;
 namespace Mogoson.CurveChain
 {
     /// <summary>
-    /// Chain base on helix curve.
+    /// Chain base on ellipse curve.
     /// </summary>
-    [AddComponentMenu("Mogoson/CurveChain/HelixChain")]
-    public class HelixChain : MonoCurveChain
+    [AddComponentMenu("Mogoson/CurveChain/EllipseChain")]
+    public class EllipseChain : MonoCurveChain
     {
         #region Field and Property
         /// <summary>
-        /// Top ellipse args of curve.
+        /// Semi minor axis of ellipse.
         /// </summary>
-        public EllipseArgs topEllipse = new EllipseArgs(Vector3.up, 1.0f, 1.0f);
+        public float semiMinorAxis = 1.0f;
 
         /// <summary>
-        /// Bottom ellipse args of curve.
+        /// Semi major axis of ellipse.
         /// </summary>
-        public EllipseArgs bottomEllipse = new EllipseArgs(Vector3.zero, 1.0f, 1.0f);
-
-        /// <summary>
-        /// Max around radian of helix.
-        /// </summary>
-        public float maxRadian = 6 * Mathf.PI;
+        public float semiMajorAxis = 1.5f;
 
         /// <summary>
         /// Curve for chain.
@@ -45,7 +40,7 @@ namespace Mogoson.CurveChain
         /// <summary>
         /// Curve of chain.
         /// </summary>
-        protected HelixCurve curve = new HelixCurve();
+        protected EllipseCurve curve = new EllipseCurve();
         #endregion
 
         #region Public Method
@@ -54,9 +49,8 @@ namespace Mogoson.CurveChain
         /// </summary>
         public override void Rebuild()
         {
-            curve.topEllipse = topEllipse;
-            curve.bottomEllipse = bottomEllipse;
-            curve.MaxKey = maxRadian;
+            curve.args.semiMinorAxis = semiMinorAxis;
+            curve.args.semiMajorAxis = semiMajorAxis;
             base.Rebuild();
         }
         #endregion

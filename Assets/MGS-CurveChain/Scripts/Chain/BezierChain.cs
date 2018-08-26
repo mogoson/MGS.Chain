@@ -23,7 +23,7 @@ namespace Mogoson.CurveChain
     {
         #region Field and Property
         /// <summary>
-        /// Anchor points of path curve.
+        /// Anchor points of chain curve.
         /// </summary>
         [SerializeField]
         [HideInInspector]
@@ -31,7 +31,7 @@ namespace Mogoson.CurveChain
             new Vector3(3, 1, 3), new Vector3(1, 1, 2), new Vector3(3, 1, 2));
 
         /// <summary>
-        /// Start point of path curve.
+        /// Start point of chain curve.
         /// </summary>
         public Vector3 StartPoint
         {
@@ -40,7 +40,7 @@ namespace Mogoson.CurveChain
         }
 
         /// <summary>
-        /// End point of path curve.
+        /// End point of chain curve.
         /// </summary>
         public Vector3 EndPoint
         {
@@ -49,7 +49,7 @@ namespace Mogoson.CurveChain
         }
 
         /// <summary>
-        /// Start tangent point of path curve.
+        /// Start tangent point of chain curve.
         /// </summary>
         public Vector3 StartTangentPoint
         {
@@ -58,7 +58,7 @@ namespace Mogoson.CurveChain
         }
 
         /// <summary>
-        /// End tangent point of path curve.
+        /// End tangent point of chain curve.
         /// </summary>
         public Vector3 EndTangentPoint
         {
@@ -67,19 +67,19 @@ namespace Mogoson.CurveChain
         }
 
         /// <summary>
-        /// Curve for path.
+        /// Curve for chain.
         /// </summary>
         protected override ICurve Curve { get { return curve; } }
 
         /// <summary>
-        /// Curve of path.
+        /// Curve of chain.
         /// </summary>
         protected CubicBezierCurve curve = new CubicBezierCurve();
         #endregion
 
         #region Public Method
         /// <summary>
-        /// Rebuild path.
+        /// Rebuild chain.
         /// </summary>
         public override void Rebuild()
         {

@@ -2,7 +2,7 @@
  *  Copyright © 2018 Mogoson. All rights reserved.
  *------------------------------------------------------------------------
  *  File         :  SinChain.cs
- *  Description  :  Null.
+ *  Description  :  Define chain base on sin curve.
  *------------------------------------------------------------------------
  *  Author       :  Mogoson
  *  Version      :  0.1.0
@@ -15,6 +15,9 @@ using UnityEngine;
 
 namespace Mogoson.CurveChain
 {
+    /// <summary>
+    /// Chain base on sin curve.
+    /// </summary>
     [AddComponentMenu("Mogoson/CurveChain/SinChain")]
     public class SinChain : MonoCurveChain
     {
@@ -30,19 +33,19 @@ namespace Mogoson.CurveChain
         public float maxKey = 2 * Mathf.PI;
 
         /// <summary>
-        /// Curve for path.
+        /// Curve for chain.
         /// </summary>
         protected override ICurve Curve { get { return curve; } }
 
         /// <summary>
-        /// Curve of path.
+        /// Curve of chain.
         /// </summary>
         protected SinCurve curve = new SinCurve();
         #endregion
 
         #region Public Method
         /// <summary>
-        /// Rebuild path.
+        /// Rebuild chain.
         /// </summary>
         public override void Rebuild()
         {

@@ -28,23 +28,22 @@ namespace Mogoson.CurveChain
         public float radius = 1.0f;
 
         /// <summary>
-        /// Curve for path.
+        /// Curve for chain.
         /// </summary>
         protected override ICurve Curve { get { return curve; } }
 
         /// <summary>
-        /// Curve of path.
+        /// Curve of chain.
         /// </summary>
         protected EllipseCurve curve = new EllipseCurve();
         #endregion
 
         #region Public Method
         /// <summary>
-        /// Rebuild path.
+        /// Rebuild chain.
         /// </summary>
         public override void Rebuild()
         {
-            radius = Mathf.Max(radius, 0.001f);
             curve.args.semiMinorAxis = radius;
             curve.args.semiMajorAxis = radius;
             base.Rebuild();
