@@ -11,6 +11,7 @@
  *************************************************************************/
 
 using Mogoson.Curve;
+using UnityEngine;
 
 namespace Mogoson.CurveChain
 {
@@ -21,7 +22,17 @@ namespace Mogoson.CurveChain
     {
         #region Property
         /// <summary>
-        ///  Segment length of chain node.
+        /// Prefab of chain node.
+        /// </summary>
+        GameObject Node { set; get; }
+
+        /// <summary>
+        /// Prefab of chain link.
+        /// </summary>
+        GameObject Link { set; get; }
+
+        /// <summary>
+        ///  Segment length of chain node (or link).
         /// </summary>
         float Segment { set; get; }
         #endregion
@@ -31,6 +42,11 @@ namespace Mogoson.CurveChain
         /// Rebuild chain nodes.
         /// </summary>
         void Rebuild();
+
+        /// <summary>
+        /// Clear chain all nodes.
+        /// </summary>
+        void Clear();
         #endregion
     }
 }

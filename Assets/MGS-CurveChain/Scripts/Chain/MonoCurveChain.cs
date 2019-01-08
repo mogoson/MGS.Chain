@@ -24,9 +24,16 @@ namespace Mogoson.CurveChain
     {
         #region Field and Property
         /// <summary>
-        /// Prefab of nodes.
+        /// Prefab of chain node.
         /// </summary>
-        public GameObject nodePrefab;
+        [SerializeField]
+        protected GameObject node;
+
+        /// <summary>
+        /// Prefab of chain roller.
+        /// </summary>
+        [SerializeField]
+        protected GameObject link;
 
         /// <summary>
         /// Segment length of chain node.
@@ -38,17 +45,38 @@ namespace Mogoson.CurveChain
         /// Nodes of chain.
         /// </summary>
         [HideInInspector]
-        public List<Node> nodes = new List<Node>();
+        [SerializeField]
+        protected List<Node> nodes = new List<Node>();
 
         /// <summary>
-        /// Segment length of chain node.
+        /// Prefab of chain node.
+        /// </summary>
+        public GameObject Node
+        {
+            set { node = value; }
+            get { return node; }
+        }
+
+        /// <summary>
+        /// Prefab of chain link.
+        /// </summary>
+        public GameObject Link
+        {
+            set { link = value; }
+            get { return link; }
+        }
+
+        /// <summary>
+        ///  Segment length of chain node (or link).
         /// </summary>
         public float Segment
         {
             set
             {
                 if (value > 0)
+                {
                     segment = value;
+                }
             }
             get { return segment; }
         }
@@ -56,12 +84,12 @@ namespace Mogoson.CurveChain
         /// <summary>
         /// Max key of chain center curve.
         /// </summary>
-        public virtual float MaxKey { get { return Curve.MaxKey; } }
+        public float MaxKey { get { return Curve.MaxKey; } }
 
         /// <summary>
         /// Length of chain center curve.
         /// </summary>
-        public virtual float Length { get { return length; } }
+        public float Length { get { return Curve.Length; } }
 
         /// <summary>
         /// Center curve for chain.
@@ -74,12 +102,7 @@ namespace Mogoson.CurveChain
         protected const float Delta = 0.001f;
 
         /// <summary>
-        /// Length of chain center curve.
-        /// </summary>
-        protected float length = 0.0f;
-
-        /// <summary>
-        /// Segment count of chain.
+        /// Segment count of chain nodes.
         /// </summary>
         protected int segmentCount = 0;
         #endregion
@@ -96,12 +119,18 @@ namespace Mogoson.CurveChain
         }
 
         /// <summary>
-        /// Add a node to chain nodes.
+        /// Add a node to chain last.
         /// </summary>
-        protected virtual void AddNode()
+        protected void AddNodeToLast()
         {
             //Create node.
+            var nodePrefab = node;
+            if (Link != null && nodes.Count % 2 == 1)
+            {
+                nodePrefab = Link;
+            }
             var nodeClone = Instantiate(nodePrefab);
+            nodeClone.hideFlags = HideFlags.HideInHierarchy;
             nodeClone.transform.SetParent(transform);
 
             //Add new node to chain nodes.
@@ -113,7 +142,7 @@ namespace Mogoson.CurveChain
         /// <summary>
         /// Remove the last node of chain nodes.
         /// </summary>
-        protected virtual void RemoveNode()
+        protected void RemoveLastNode()
         {
             if (nodes.Count > 0)
             {
@@ -139,7 +168,7 @@ namespace Mogoson.CurveChain
             var nodePos = GetPointAt(key);
             var deltaPos = GetPointAt(key + Delta);
             var secant = (deltaPos - nodePos).normalized;
-            var worldUp = Vector3.Cross(secant, transform.forward);
+            var worldUp = Vector3.Cross(secant, transform.up);
 
             node.position = nodePos;
             node.LookAt(deltaPos, worldUp);
@@ -152,30 +181,45 @@ namespace Mogoson.CurveChain
         /// </summary>
         public virtual void Rebuild()
         {
-            length = Curve.Length;
-            segmentCount = (int)Math.Round(length / segment, MidpointRounding.AwayFromZero);
+            segmentCount = (int)Math.Round(Length / segment, MidpointRounding.AwayFromZero);
 
 #if UNITY_EDITOR
-            if (!Application.isPlaying && nodePrefab == null)
+            if (!Application.isPlaying && node == null)
             {
                 return;
             }
 #endif
             while (nodes.Count < segmentCount)
             {
-                AddNode();
+                AddNodeToLast();
             }
 
             while (nodes.Count > segmentCount)
             {
-                RemoveNode();
+                RemoveLastNode();
             }
 
             var keySegment = MaxKey / (segmentCount - 1);
+            foreach (var nodeItem in nodes)
+            {
+                TowNodeOnCurve(nodeItem.transform, keySegment * nodeItem.ID);
+            }
+        }
+
+        /// <summary>
+        /// Clear chain all nodes.
+        /// </summary>
+        public virtual void Clear()
+        {
             foreach (var node in nodes)
             {
-                TowNodeOnCurve(node.transform, keySegment * node.ID);
+#if UNITY_EDITOR
+                DestroyImmediate(node.gameObject);
+#else
+                Destroy(node.gameObject);
+#endif
             }
+            nodes.Clear();
         }
 
         /// <summary>

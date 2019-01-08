@@ -30,22 +30,27 @@ namespace Mogoson.CurveChain
             if (!Application.isPlaying)
             {
                 Target.Rebuild();
-                Undo.undoRedoPerformed = () => { Target.Rebuild(); };
+                Undo.undoRedoPerformed = () => Target.Rebuild();
             }
         }
 
         protected virtual void OnSceneGUI()
+        {
+            DrawChainCenterCurve();
+        }
+
+        protected virtual void OnDisable()
+        {
+            Undo.undoRedoPerformed = null;
+        }
+
+        protected virtual void DrawChainCenterCurve()
         {
             Handles.color = Blue;
             for (float t = 0; t < Target.MaxKey; t += Delta)
             {
                 Handles.DrawLine(Target.GetPointAt(t), Target.GetPointAt(t + Delta));
             }
-        }
-
-        protected virtual void OnDisable()
-        {
-            Undo.undoRedoPerformed = null;
         }
         #endregion
 
@@ -55,7 +60,10 @@ namespace Mogoson.CurveChain
             EditorGUI.BeginChangeCheck();
             DrawDefaultInspector();
             if (EditorGUI.EndChangeCheck())
+            {
+                Target.Clear();
                 Target.Rebuild();
+            }
         }
         #endregion
     }

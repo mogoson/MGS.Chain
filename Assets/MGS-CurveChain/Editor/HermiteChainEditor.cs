@@ -1,8 +1,8 @@
 /*************************************************************************
  *  Copyright © 2018 Mogoson. All rights reserved.
  *------------------------------------------------------------------------
- *  File         :  AnchorChainEditor.cs
- *  Description  :  Editor for AnchorChain.
+ *  File         :  HermiteChainEditor.cs
+ *  Description  :  Editor for HermiteChain.
  *------------------------------------------------------------------------
  *  Author       :  Mogoson
  *  Version      :  0.1.0
@@ -15,16 +15,26 @@ using UnityEngine;
 
 namespace Mogoson.CurveChain
 {
-    [CustomEditor(typeof(AnchorChain), true)]
+    [CustomEditor(typeof(HermiteChain), true)]
     [CanEditMultipleObjects]
-    public class AnchorChainEditor : CurveChainEditor
+    public class HermiteChainEditor : CurveChainEditor
     {
         #region Field and Property
-        protected new AnchorChain Target { get { return target as AnchorChain; } }
+        protected new HermiteChain Target { get { return target as HermiteChain; } }
         #endregion
 
         #region Protected Method
         protected override void OnSceneGUI()
+        {
+            base.OnSceneGUI();
+            if (Application.isPlaying)
+            {
+                return;
+            }
+            DrawHermiteCurveEditor();
+        }
+
+        protected override void DrawChainCenterCurve()
         {
             Handles.color = Blue;
             var scaleDelta = Mathf.Max(Delta, Delta * GetHandleSize(Target.transform.position));
@@ -32,10 +42,10 @@ namespace Mogoson.CurveChain
             {
                 Handles.DrawLine(Target.GetPointAt(t), Target.GetPointAt(Mathf.Min(Target.MaxKey, t + scaleDelta)));
             }
+        }
 
-            if (Application.isPlaying)
-                return;
-
+        protected void DrawHermiteCurveEditor()
+        {
             for (int i = 0; i < Target.AnchorsCount; i++)
             {
                 var anchorItem = Target.GetAnchorAt(i);

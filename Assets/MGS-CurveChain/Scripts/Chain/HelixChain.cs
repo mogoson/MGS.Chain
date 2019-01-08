@@ -25,12 +25,12 @@ namespace Mogoson.CurveChain
         /// <summary>
         /// Top ellipse args of curve.
         /// </summary>
-        public EllipseArgs topEllipse = new EllipseArgs(Vector3.up, 1.0f, 1.0f);
+        public EllipseArgs topEllipse = new EllipseArgs(Vector3.up, 1, 1);
 
         /// <summary>
         /// Bottom ellipse args of curve.
         /// </summary>
-        public EllipseArgs bottomEllipse = new EllipseArgs(Vector3.zero, 1.0f, 1.0f);
+        public EllipseArgs bottomEllipse = new EllipseArgs(Vector3.zero, 1, 1);
 
         /// <summary>
         /// Max around radian of helix.

@@ -1,8 +1,8 @@
 /*************************************************************************
  *  Copyright © 2018 Mogoson. All rights reserved.
  *------------------------------------------------------------------------
- *  File         :  AnchorChain.cs
- *  Description  :  Define chain path base on anchors.
+ *  File         :  HermiteChain.cs
+ *  Description  :  Define chain path base on hermite curve.
  *------------------------------------------------------------------------
  *  Author       :  Mogoson
  *  Version      :  0.1.0
@@ -17,10 +17,10 @@ using UnityEngine;
 namespace Mogoson.CurveChain
 {
     /// <summary>
-    /// Chain path base on anchors.
+    /// Chain path base on hermite curve.
     /// </summary>
-    [AddComponentMenu("Mogoson/CurveChain/AnchorChain")]
-    public class AnchorChain : MonoCurveChain
+    [AddComponentMenu("Mogoson/CurveChain/HermiteChain")]
+    public class HermiteChain : MonoCurveChain
     {
         #region Field and Property
         /// <summary>
