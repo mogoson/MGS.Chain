@@ -30,7 +30,7 @@ namespace Mogoson.CurveChain
         /// <summary>
         /// Max key of sin curve.
         /// </summary>
-        public float maxKey = 2 * Mathf.PI;
+        public float maxKey = 2;
 
         /// <summary>
         /// Curve for chain.
@@ -50,7 +50,7 @@ namespace Mogoson.CurveChain
         public override void Rebuild()
         {
             curve.args = args;
-            curve.MaxKey = maxKey;
+            curve.MaxKey = maxKey * Mathf.PI;
             base.Rebuild();
         }
         #endregion

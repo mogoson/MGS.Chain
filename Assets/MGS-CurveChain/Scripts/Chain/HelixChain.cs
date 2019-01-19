@@ -35,7 +35,7 @@ namespace Mogoson.CurveChain
         /// <summary>
         /// Max around radian of helix.
         /// </summary>
-        public float maxRadian = 6 * Mathf.PI;
+        public float maxRadian = 6;
 
         /// <summary>
         /// Curve for chain.
@@ -56,7 +56,7 @@ namespace Mogoson.CurveChain
         {
             curve.topEllipse = topEllipse;
             curve.bottomEllipse = bottomEllipse;
-            curve.MaxKey = maxRadian;
+            curve.MaxKey = maxRadian * Mathf.PI;
             base.Rebuild();
         }
         #endregion

@@ -56,10 +56,13 @@ namespace Mogoson.CurveChain
                     {
                         var offset = Vector3.zero;
                         if (i > 0)
+                        {
                             offset = (anchorItem - Target.GetAnchorAt(i - 1)).normalized * GetHandleSize(anchorItem);
+                        }
                         else
+                        {
                             offset = Vector3.forward * GetHandleSize(anchorItem);
-
+                        }
                         Target.InsertAnchor(i + 1, anchorItem + offset);
                         Target.Rebuild();
                     });
