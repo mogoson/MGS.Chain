@@ -33,8 +33,11 @@ MonoHermiteCurve MonoBezierCurve MonoHelixCurve MonoEllipseCurve MonoSinCurve
 ```
 
 - Adjust the parameters of curve component or edit curve in scene editor.
-
 - Attach **MonoCurveChain** component to the curve game object.
+
+## Source
+
+- https://github.com/mogoson/MGS.Chain
 
 ------
 
