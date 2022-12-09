@@ -40,6 +40,11 @@ namespace MGS.Chain
         protected float segment = 0.1f;
 
         /// <summary>
+        /// Piece length of chain node.
+        /// </summary>
+        protected float piece;
+
+        /// <summary>
         /// Nodes of chain.
         /// </summary>
         [HideInInspector]
@@ -95,8 +100,7 @@ namespace MGS.Chain
                 return;
             }
 #endif
-            var differ = 0f;
-            var segmentCount = GetSegmentCount(Length, segment, out differ);
+            var segmentCount = GetSegmentCount(Length, segment, out piece);
             while (nodes.Count < segmentCount)
             {
                 AddNodeToLast();
@@ -107,10 +111,7 @@ namespace MGS.Chain
                 RemoveLastNode();
             }
 
-            foreach (var nodeItem in nodes)
-            {
-                AnchorNode(nodeItem, differ);
-            }
+            AnchorNodes(nodes);
         }
 
         /// <summary>
@@ -171,22 +172,21 @@ namespace MGS.Chain
         /// </summary>
         /// <param name="length"></param>
         /// <param name="segment"></param>
-        /// <param name="differ"></param>
+        /// <param name="piece"></param>
         /// <returns></returns>
-        protected int GetSegmentCount(float length, float segment, out float differ)
+        protected int GetSegmentCount(float length, float segment, out float piece)
         {
             //AwayFromZero means that 12.5 -> 13
             var count = (int)Math.Round(length / segment, MidpointRounding.AwayFromZero);
             count = Mathf.Max(count, 1);
-            differ = length / count;
+            piece = length / count;
             return count;
         }
 
         /// <summary>
-        /// Anchor node to chain.
+        /// Anchor nodes to chain.
         /// </summary>
         /// <param name="node"></param>
-        /// <param name="differ"></param>
-        protected abstract void AnchorNode(Node node, float differ);
+        protected abstract void AnchorNodes(List<Node> nodes);
     }
 }

@@ -11,6 +11,7 @@
  *************************************************************************/
 
 using MGS.Curve;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace MGS.Chain
@@ -32,6 +33,11 @@ namespace MGS.Chain
         protected IMonoCurve curve;
 
         /// <summary>
+        /// Current motion of chain.
+        /// </summary>
+        protected float motion;
+
+        /// <summary>
         /// Rebuild chain base curve.
         /// </summary>
         /// <param name="curve"></param>
@@ -39,6 +45,19 @@ namespace MGS.Chain
         {
             this.curve = curve;
             Rebuild();
+        }
+
+        /// <summary>
+        /// Drive the chain.
+        /// </summary>
+        /// <param name="velocity">Linear velocity.</param>
+        public virtual void Drive(float velocity)
+        {
+            motion += velocity;
+            foreach (var node in nodes)
+            {
+                TowNodeAlongCurve(node, motion);
+            }
         }
 
         /// <summary>
@@ -51,23 +70,45 @@ namespace MGS.Chain
         }
 
         /// <summary>
-        /// Anchor node to chain.
+        /// Anchor nodes to chain.
         /// </summary>
         /// <param name="node"></param>
-        /// <param name="differ"></param>
-        protected override void AnchorNode(Node node, float differ)
+        protected override void AnchorNodes(List<Node> nodes)
         {
-            var t = node.ID * differ;
-            var nodePos = curve.Evaluate(t);
+            TowNodesAlongCurve(nodes, 0);
+        }
 
-            var dt = (node.ID + 1) * differ;
-            var deltaPos = curve.Evaluate(dt);
+        /// <summary>
+        /// Tow nodes along curve.
+        /// </summary>
+        /// <param name="nodes"></param>
+        /// <param name="motion"></param>
+        protected void TowNodesAlongCurve(List<Node> nodes, float motion)
+        {
+            foreach (var node in nodes)
+            {
+                TowNodeAlongCurve(node, motion);
+            }
+        }
 
-            var secant = (deltaPos - nodePos).normalized;
+        /// <summary>
+        /// Tow node along center curve.
+        /// </summary>
+        /// <param name="node"></param>
+        /// <param name="motion"></param>
+        protected virtual void TowNodeAlongCurve(Node node, float motion)
+        {
+            var len = (motion + node.ID * piece) % Length;
+            var nodePos = curve.Evaluate(len);
+
+            var nextLen = (motion + (node.ID + 1) * piece) % Length;
+            var nextPos = curve.Evaluate(nextLen);
+
+            var secant = (nextPos - nodePos).normalized;
             var worldUp = Vector3.Cross(secant, transform.up);
 
             node.transform.position = nodePos;
-            node.transform.LookAt(deltaPos, worldUp);
+            node.transform.LookAt(nextPos, worldUp);
         }
     }
 }
