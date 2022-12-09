@@ -53,7 +53,9 @@ namespace MGS.Chain
         /// <param name="velocity">Linear velocity.</param>
         public virtual void Drive(float velocity)
         {
-            motion += velocity;
+            motion += velocity + Length;
+            motion %= Length;
+
             foreach (var node in nodes)
             {
                 TowNodeAlongCurve(node, motion);
