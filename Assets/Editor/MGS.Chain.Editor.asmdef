@@ -1,0 +1,17 @@
+{
+    "name": "MGS.Chain.Editor",
+    "rootNamespace": "",
+    "references": [
+        "MGS.Chain",
+        "MGS.Curve"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

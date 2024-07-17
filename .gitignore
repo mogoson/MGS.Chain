@@ -36,3 +36,6 @@ sysinfo.txt
 *.unitypackage
 /Assets/ScriptTemplateToolkit.meta
 /Assets/ScriptTemplateToolkit
+/*.vsconfig
+/Logs
+/UserSettings
