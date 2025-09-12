@@ -1,13 +1,10 @@
 {
-    "name": "MGS.Chain.Editor",
+    "name": "MGS.Chain.Sample",
     "rootNamespace": "",
     "references": [
-        "MGS.Chain",
-        "MGS.Curve"
+        "MGS.Chain"
     ],
-    "includePlatforms": [
-        "Editor"
-    ],
+    "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,

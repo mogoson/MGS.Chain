@@ -6,23 +6,19 @@
 
 - Smooth 3D chain component for Unity project develop.
 
-## Version
-
-- 0.1.0
-
-## Platform
-
-- Windows
-
-## Environment
-
-- .Net Framework 3.5 or above.
-- Unity 5.0 or above.
-
-## Demand
+## Ability
 
 - Create smooth **Curve** in scene.
 - Create **Chain ** base curve in scene.
+
+## Install
+
+- Unity --> Window --> Package Manager --> "+" --> Add package from git URL...
+
+  ```text
+  https://github.com/mogoson/MGS.Chain.git?path=/Assets
+  ```
+
 
 ## Usage
 
@@ -35,6 +31,10 @@ MonoHermiteCurve MonoBezierCurve MonoHelixCurve MonoEllipseCurve MonoSinCurve
 - Adjust the parameters of curve component or edit curve in scene editor.
 - Attach **MonoCurveChain** component to the curve game object.
 
-------
+## Samples
 
-Copyright © 2022 Mogoson.	mogoson@outlook.co
+- Unity --> Window --> Package Manager --> Packages-Mogoson --> Chain --> Samples.
+
+---
+
+Copyright © 2025 Mogoson.	mogoson@outlook.com

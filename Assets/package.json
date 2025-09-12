@@ -1,7 +1,24 @@
 {
-    "description": "Smooth 3D chain component for Unity project develop.",
-    "displayName": "Chain",
     "name": "com.mgs.chain",
+    "version": "1.0.0",
+    "displayName": "Chain",
+    "description": "Smooth 3D chain component for Unity project develop.",
     "unity": "2021.3",
-    "version": "1.0.0"
+    "keywords": [
+        "chain",
+        "smooth",
+        "curve"
+    ],
+    "author": {
+        "name": "Mogoson",
+        "email": "mogoson@outlook.com",
+        "url": "https://github.com/mogoson"
+    },
+    "samples": [
+        {
+            "displayName": "Sample",
+            "description": "Sample for 3D chain component",
+            "path": "Samples~/Sample"
+        }
+    ]
 }

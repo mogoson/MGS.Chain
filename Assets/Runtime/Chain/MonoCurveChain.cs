@@ -1,5 +1,5 @@
 ﻿/*************************************************************************
- *  Copyright © 2017-2018 Mogoson. All rights reserved.
+ *  Copyright © 2025 Mogoson. All rights reserved.
  *------------------------------------------------------------------------
  *  File         :  MonoCurveChain.cs
  *  Description  :  Define chain base on MonoCurve.
@@ -12,12 +12,14 @@
 
 using System.Collections.Generic;
 using MGS.Curve;
+using UnityEngine;
 
 namespace MGS.Chain
 {
     /// <summary>
     /// Chain base on MonoCurve.
     /// </summary>
+    [AddComponentMenu("MGS/Chain/Mono Curve Chain")]
     public class MonoCurveChain : MonoChain, IMonoCurveListener
     {
         /// <summary>
@@ -44,7 +46,7 @@ namespace MGS.Chain
             this.curve = curve;
             Rebuild();
         }
-        
+
         /// <summary>
         /// Drive the chain.
         /// </summary>

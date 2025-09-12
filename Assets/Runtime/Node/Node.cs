@@ -1,5 +1,5 @@
 ﻿/*************************************************************************
- *  Copyright © 2017-2018 Mogoson. All rights reserved.
+ *  Copyright © 2025 Mogoson. All rights reserved.
  *------------------------------------------------------------------------
  *  File         :  Node.cs
  *  Description  :  Define Node component.
@@ -17,6 +17,7 @@ namespace MGS.Chain
     /// <summary>
     /// Node component.
     /// </summary>
+    [AddComponentMenu("MGS/Chain/Node")]
     public class Node : MonoBehaviour, INode
     {
         #region Field and Property
